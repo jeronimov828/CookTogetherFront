@@ -22,3 +22,23 @@ export const CrearPasos = async (
   );
   return response.data;
 };
+
+export const ListarPasos = async (
+  id: string
+): Promise<PasosResponse> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No hay token en el almacenamiento local");
+  }
+
+  const response = await axios.get<PasosResponse>(
+    `http://localhost:3000/apiRecetas/pasos/listarPasos/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+}

@@ -7,6 +7,8 @@ import {
 import { RecetaResponse } from "../interfaces/interfaceReceta.interface";
 import Swal from "sweetalert2";
 import AgregarPasosPageContent from "./agregarPasosPageContent";
+import TablaIngredientes from "./tablaIngredientes";
+import TablaPasos from "./tablaPasosPage";
 
 interface Props {
   onClickSuccess: () => void;
@@ -19,7 +21,8 @@ const ListaRecetasPage: React.FC<Props> = ({ onClickSuccess }) => {
   const [recetaSeleccionadaId, setRecetaSeleccionadaId] = useState<
     string | null
   >(null);
-
+  const [modalListarIngredientes, setModalListarIngredientes] = useState(false);
+  const [modalListarPasos, setModaListarPasos] = useState(false);
   useEffect(() => {
     const cargarRecetas = async () => {
       try {
@@ -139,25 +142,21 @@ const ListaRecetasPage: React.FC<Props> = ({ onClickSuccess }) => {
                     className="btn btn-outline-success btn-sm"
                     onClick={() => {
                       setRecetaSeleccionadaId(receta.id ?? null);
-                      setModalMostrarAgregarPasos(true);
+                      setModaListarPasos(true);
                     }}
                   >
-                    Agregar pasos a la receta
+                    Lista de pasos
                   </button>
 
-                  {/* Ingredientes */}
-                  {receta.ingredientes && receta.ingredientes.length > 0 && (
-                    <div className="mb-3">
-                      <strong>Ingredientes:</strong>
-                      <ul className="mb-0 mt-1">
-                        {receta.ingredientes.map((ing, idx) => (
-                          <li key={idx} className="text-muted">
-                            {ing.nombre}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  <button
+                    className="btn btn-outline-success btn-sm"
+                    onClick={() => {
+                      setRecetaSeleccionadaId(receta.id ?? null);
+                      setModalListarIngredientes(true);
+                    }}
+                  >
+                    Mostrar Ingredientes
+                  </button>
 
                   <div className="d-flex justify-content-between align-items-center">
                     <span className="badge bg-success">
@@ -202,6 +201,61 @@ const ListaRecetasPage: React.FC<Props> = ({ onClickSuccess }) => {
                   idReceta={recetaSeleccionadaId}
                   onClickSuccess={() => setModalMostrarAgregarPasos(false)}
                 />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* MODAL LISTAR INGREDIENTES*/}
+      {modalListarIngredientes && (
+        <div
+          className="modal fade show"
+          style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        >
+          <div className="modal-dialog modal-lg modal-dialog-centered">
+            <div className="modal-content">
+              <button
+                type="button"
+                className="btn-close"
+                onClick={() => setModalListarIngredientes(false)}
+              ></button>
+              <div className="modal-header">
+                <h5 className="mb-3">Tabla de ingredientes 👨‍💼</h5>
+              </div>
+              <div className="modal-body">
+                <TablaIngredientes id={recetaSeleccionadaId} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* MODAL LISTAR PASOS*/}
+      {modalListarPasos && (
+        <div
+          className="modal fade show"
+          style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        >
+          <div className="modal-dialog modal-lg modal-dialog-centered">
+            <div className="modal-content">
+              <button
+                type="button"
+                className="btn-close"
+                onClick={() => setModaListarPasos(false)}
+              ></button>
+              <div className="modal-header">
+                <h5 className="mb-3">Tabla de pasos 👨‍💼</h5>
+              </div>
+              <div className="modal-body">
+                <TablaPasos id={recetaSeleccionadaId} />
+                <button
+                  className="btn btn-outline-success btn-sm"
+                  onClick={() => {
+                    setModalMostrarAgregarPasos(true);
+                    setModaListarPasos(false);
+                  }}
+                >
+                  Agregar Paso
+                </button>
               </div>
             </div>
           </div>
