@@ -42,3 +42,24 @@ export const ListarPasos = async (
   );
   return response.data;
 }
+
+export const eliminarPasos = async (
+  idPaso: string
+): Promise<PasosResponse> => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No hay token en el almacenamiento local");
+  }
+
+  const response = await axios.delete<PasosResponse>(
+    `http://localhost:3000/apiRecetas/pasos/eliminarPasos/${idPaso}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};

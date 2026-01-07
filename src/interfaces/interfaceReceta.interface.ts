@@ -2,7 +2,7 @@ export interface RecetaResponse {
   mensaje?: string;
   titulo?: string;
   descripcion?: number;
-  difictultad?: string;
+  dificultad?: string;
   porciones?: number;
   tiempo_min?: number;
   autor?: {

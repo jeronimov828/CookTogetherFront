@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import AgregarPasosPageContent from "./agregarPasosPageContent";
 import TablaIngredientes from "./tablaIngredientes";
 import TablaPasos from "./tablaPasosPage";
+import AgregarIngredientesPageContent from "./agregarIngredientesPageContent";
 
 interface Props {
   onClickSuccess: () => void;
@@ -22,6 +23,8 @@ const ListaRecetasPage: React.FC<Props> = ({ onClickSuccess }) => {
     string | null
   >(null);
   const [modalListarIngredientes, setModalListarIngredientes] = useState(false);
+  const [modalAgregarIngredientes, setModalAgregarIngredientes] =
+    useState(false);
   const [modalListarPasos, setModaListarPasos] = useState(false);
   useEffect(() => {
     const cargarRecetas = async () => {
@@ -120,7 +123,7 @@ const ListaRecetasPage: React.FC<Props> = ({ onClickSuccess }) => {
                   </p>
                   <ul className="list-unstyled small mb-3">
                     <li>
-                      <strong>Dificultad:</strong> {receta.difictultad}
+                      <strong>Dificultad:</strong> {receta.dificultad}
                     </li>
                     <li>
                       <strong>Porciones:</strong> {receta.porciones}
@@ -225,6 +228,15 @@ const ListaRecetasPage: React.FC<Props> = ({ onClickSuccess }) => {
               <div className="modal-body">
                 <TablaIngredientes id={recetaSeleccionadaId} />
               </div>
+              <button
+                className="btn btn-outline-success btn-sm"
+                onClick={() => {
+                  setModalAgregarIngredientes(true);
+                  setModalListarIngredientes(false);
+                }}
+              >
+                Agregar Ingrediente
+              </button>
             </div>
           </div>
         </div>
@@ -256,6 +268,32 @@ const ListaRecetasPage: React.FC<Props> = ({ onClickSuccess }) => {
                 >
                   Agregar Paso
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* MODAL AGREGAR INGREDIENTES*/}
+      {modalAgregarIngredientes && (
+        <div
+          className="modal fade show"
+          style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        >
+          <div className="modal-dialog modal-lg modal-dialog-centered">
+            <div className="modal-content">
+              <button
+                type="button"
+                className="btn-close"
+                onClick={() => setModalAgregarIngredientes(false)}
+              ></button>
+              <div className="modal-header">
+                <h5 className="mb-3">Formulario para agregar nuevos ingredientes 👨‍💼</h5>
+              </div>
+              <div className="modal-body">
+                <AgregarIngredientesPageContent
+                  idReceta={recetaSeleccionadaId}
+                  onClickSuccess={() => setModalAgregarIngredientes(false)}
+                />
               </div>
             </div>
           </div>
