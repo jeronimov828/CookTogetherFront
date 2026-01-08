@@ -29,13 +29,17 @@ const ListaRecetasPage: React.FC<Props> = ({ onClickSuccess }) => {
   useEffect(() => {
     const cargarRecetas = async () => {
       try {
-        const recetasData = await ListarRecetas();
-        setRecetas(Array.isArray(recetasData) ? recetasData : [recetasData]);
+        const response = await ListarRecetas();
+        console.log("RECETAS:", response);
+
+        // Suponemos que ListarRecetas retorna directamente un array de recetas:
+        setRecetas(response.recetas); 
       } catch (error) {
         console.error("Error al cargar recetas:", error);
+        Swal.fire("Error", "No se pudieron cargar las recetas", "error");
       }
     };
-
+  
     cargarRecetas();
   }, []);
 

@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍳 CookTogether Frontend
 
-## Getting Started
+Aplicación web React para gestión y compartición de recetas culinarias con autenticación y roles de usuario.
 
-First, run the development server:
+## 🚀 Tecnologías
 
+- **React** 18.2.0
+- **TypeScript** 4.9.5
+- **React Router DOM** 7.5.1
+- **Bootstrap** 5.3.5
+- **Axios** 1.8.4
+- **SweetAlert2** 11.19.1
+
+## 📋 Requisitos Previos
+
+- Node.js 16.x o superior
+- npm o yarn
+- Backend API corriendo en `http://localhost:3000/apiRecetas` (o configurar en `.env`)
+
+## 🔧 Instalación
+
+1. **Clonar el repositorio**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repo-url>
+cd CookTogetherFront
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Instalar dependencias**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Configurar variables de entorno**
+```bash
+# Crear archivo .env.development basado en .env.example
+cp .env.example .env.development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Editar .env.development con tus valores si es necesario
+```
 
-## Learn More
+4. **Iniciar servidor de desarrollo**
+```bash
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+La aplicación estará disponible en `http://localhost:3000`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Estructura del Proyecto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── components/        # Componentes reutilizables
+│   └── common/       # Componentes comunes (LoadingSpinner, etc.)
+├── config/           # Configuración (axios, API endpoints)
+├── contexts/         # Context API (AuthContext)
+├── interfaces/       # TypeScript interfaces
+├── pages/           # Páginas/views de la aplicación
+└── services/        # Servicios de API
+```
 
-## Deploy on Vercel
+## 🧪 Testing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm test
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🏗️ Build para Producción
+
+```bash
+npm run build
+```
+
+Esto crea una carpeta `build` con los archivos optimizados para producción.
+
+## 📝 Scripts Disponibles
+
+- `npm start` - Inicia servidor de desarrollo
+- `npm build` - Crea build de producción
+- `npm test` - Ejecuta tests
+- `npm eject` - Expone la configuración de Create React App (irreversible)
+
+## 🔐 Autenticación
+
+La aplicación utiliza:
+- JWT tokens almacenados en localStorage
+- Context API para manejo de estado de autenticación
+- Interceptores de Axios para agregar tokens automáticamente
+
+## 🎯 Funcionalidades
+
+- ✅ Login y registro de usuarios
+- ✅ Gestión de recetas (crear, listar, eliminar, publicar)
+- ✅ Gestión de ingredientes
+- ✅ Gestión de pasos de recetas
+- ✅ Roles de usuario (admin/usuario)
+- ✅ Interfaz responsive con Bootstrap
+
+## 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT.
+
+## 👥 Autores
+
+- Tu nombre aquí
+
+## 🙏 Agradecimientos
+
+- Create React App
+- Bootstrap
+- React Router

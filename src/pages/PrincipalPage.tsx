@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import PrincipalPageContent from "../pages/PrincipalPageContent";
 import CrearRecetaContent from "./CrearRecetasPageContent";
 import Swal from "sweetalert2";
 import CardsListarRecetasPageContent from "./CardsListarRecetasPageContent";
 import TablaUsuariosPage from "./TablaUsuariosPage";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const PrincipalPage: React.FC = () => {
-  const [rol, setRol] = useState<string | null>(null);
+  const { user, logout, isLoading } = useAuth();
+  const navigate = useNavigate();
   const [modalMostrarCrearUsuario, setModalMostrarCrearUsuario] = useState(false);
   const [modalMostrarCrearReceta, setModalMostrarCrearReceta] = useState(false);
   const [mostrarRecetas, setMostrarRecetas] = useState(false);
   const [modalListarUsuariosAbierto, setModalListarUsuariosAbierto] = useState(false);
-
-  useEffect(() => {
-    const rolGuardado = localStorage.getItem("rol");
-    setRol(rolGuardado);
-  }, []);
 
   const handleLogout = () => {
     Swal.fire({
@@ -27,14 +26,17 @@ const PrincipalPage: React.FC = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("rol");
-        window.location.href = "/";
+        logout();
+        navigate("/");
       }
     });
   };
 
-  if (!rol) return <p>Cargando...</p>;
+  if (isLoading) {
+    return <LoadingSpinner message="Cargando..." />;
+  }
+
+  const rol = user?.role || null;
 
   return (
     <>
@@ -47,6 +49,13 @@ const PrincipalPage: React.FC = () => {
 
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto align-items-center">
+              {user && (
+                <li className="nav-item">
+                  <span className="navbar-text me-3">
+                    👤 {user.name}
+                  </span>
+                </li>
+              )}
               {rol === "admin" && (
                 <>
                   <li className="nav-item">

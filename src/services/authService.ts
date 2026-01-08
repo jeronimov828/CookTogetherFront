@@ -1,4 +1,5 @@
-import axios from "axios";
+import apiClient from "../config/axios.config";
+import { API_ENDPOINTS } from "../config/api.config";
 
 interface LoginResponse {
   message: string;
@@ -22,8 +23,8 @@ export const login = async (
   name: string,
   passwordHash: string
 ): Promise<LoginResponse> => {
-  const response = await axios.post<LoginResponse>(
-    "http://localhost:3000/apiRecetas/usuarios/login",
+  const response = await apiClient.post<LoginResponse>(
+    API_ENDPOINTS.AUTH.LOGIN,
     {
       name,
       passwordHash,
@@ -39,8 +40,8 @@ export const crearUsuario = async (
   passwordHash: string,
   role: string
 ): Promise<LoginResponse> => {
-  const response = await axios.post<LoginResponse>(
-    "http://localhost:3000/apiRecetas/usuarios",
+  const response = await apiClient.post<LoginResponse>(
+    API_ENDPOINTS.AUTH.REGISTER,
     {
       name,
       email,
@@ -53,41 +54,13 @@ export const crearUsuario = async (
 };
 
 export const ListaUsuarios = async (): Promise<Usuario[]> => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("No hay token en el almacenamiento local");
-  }
-
-  const response = await axios.get<Usuario[]>(
-    "http://localhost:3000/apiRecetas/usuarios",
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
+  const response = await apiClient.get<Usuario[]>(API_ENDPOINTS.AUTH.USERS);
   return response.data;
 };
 
 export const eliminarUsuario = async (id: string): Promise<Usuario[]> => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("No hay token en el almacenamiento local");
-  }
-
-  const response = await axios.delete<Usuario[]>(
-    `http://localhost:3000/apiRecetas/usuarios/eliminaUsuario/${id}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const response = await apiClient.delete<Usuario[]>(
+    API_ENDPOINTS.AUTH.DELETE_USER(id)
   );
-
   return response.data;
 };

@@ -41,3 +41,10 @@ export interface RecetaResponse {
     };
   };
 }
+
+export interface ListarRecetasResponse {
+  recetas: RecetaResponse[];
+  total: number;
+  page: number;
+  limit: number;
+}

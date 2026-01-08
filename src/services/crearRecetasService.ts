@@ -1,5 +1,6 @@
-import axios from "axios";
-import { RecetaResponse } from "../interfaces/interfaceReceta.interface";
+import apiClient from "../config/axios.config";
+import { API_ENDPOINTS } from "../config/api.config";
+import { RecetaResponse, ListarRecetasResponse} from "../interfaces/interfaceReceta.interface";
 
 export const CrearReceta = async (
   titulo: string,
@@ -12,14 +13,8 @@ export const CrearReceta = async (
     nombre: string;
   }[]
 ): Promise<RecetaResponse> => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("No hay token en el almacenamiento local");
-  }
-
-  const response = await axios.post<RecetaResponse>(
-    "http://localhost:3000/apiRecetas/recetas/crearRecetas",
+  const response = await apiClient.post<RecetaResponse>(
+    API_ENDPOINTS.RECETAS.CREATE,
     {
       titulo,
       descripcion,
@@ -28,33 +23,15 @@ export const CrearReceta = async (
       tiempo_min,
       imagen_Url,
       ingredientes,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
     }
   );
 
   return response.data;
 };
 
-export const ListarRecetas = async (): Promise<RecetaResponse> => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("No hay token en el almacenamiento local");
-  }
-
-  const response = await axios.get<RecetaResponse>(
-    "http://localhost:3000/apiRecetas/recetas/listarRecetas",
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
+export const ListarRecetas = async (): Promise<ListarRecetasResponse> => {
+  const response = await apiClient.get<ListarRecetasResponse>(
+    API_ENDPOINTS.RECETAS.LIST
   );
 
   return response.data;
@@ -64,27 +41,10 @@ export const PublicaRectas = async (
   id: string,
   is_Public: boolean
 ): Promise<RecetaResponse> => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("No hay token en el almacenamiento local");
-  }
-
-  const response = await axios.put<RecetaResponse>(
-    `http://localhost:3000/apiRecetas/recetas/publicarReceta/${id}`,
-    { is_Public },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const response = await apiClient.put<RecetaResponse>(
+    API_ENDPOINTS.RECETAS.PUBLISH(id),
+    { is_Public }
   );
-
-  // No 'ok' property in axios response, instead check for status code
-  if (response.status < 200 || response.status >= 300) {
-    throw new Error("Error al actualizar la publicación de la receta");
-  }
 
   return response.data;
 };
@@ -92,26 +52,9 @@ export const PublicaRectas = async (
 export const EliminarRecetas = async (
   id: string
 ): Promise<RecetaResponse> => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("No hay token en el almacenamiento local");
-  }
-
-  const response = await axios.delete<RecetaResponse>(
-    `http://localhost:3000/apiRecetas/recetas/eliminarReceta/${id}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const response = await apiClient.delete<RecetaResponse>(
+    API_ENDPOINTS.RECETAS.DELETE(id)
   );
-
-  // No 'ok' property in axios response, instead check for status code
-  if (response.status < 200 || response.status >= 300) {
-    throw new Error("Error al eliminar la receta");
-  }
 
   return response.data;
 };

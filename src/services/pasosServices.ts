@@ -1,24 +1,14 @@
-import axios from "axios";
+import apiClient from "../config/axios.config";
+import { API_ENDPOINTS } from "../config/api.config";
 import { PasosResponse } from "../interfaces/interfacePasos.interface";
 
 export const CrearPasos = async (
   id: string,
   pasos: { contenido: string; orden: number }[]
 ): Promise<PasosResponse> => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    throw new Error("No hay token en el almacenamiento local");
-  }
-
-  const response = await axios.post<PasosResponse>(
-    `http://localhost:3000/apiRecetas/pasos/crearPasos/${id}`,
-    { pasos }, // 👈 Enviar dentro de un objeto
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const response = await apiClient.post<PasosResponse>(
+    API_ENDPOINTS.PASOS.CREATE(id),
+    { pasos }
   );
   return response.data;
 };
@@ -26,40 +16,17 @@ export const CrearPasos = async (
 export const ListarPasos = async (
   id: string
 ): Promise<PasosResponse> => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    throw new Error("No hay token en el almacenamiento local");
-  }
-
-  const response = await axios.get<PasosResponse>(
-    `http://localhost:3000/apiRecetas/pasos/listarPasos/${id}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const response = await apiClient.get<PasosResponse>(
+    API_ENDPOINTS.PASOS.LIST(id)
   );
   return response.data;
-}
+};
 
 export const eliminarPasos = async (
   idPaso: string
 ): Promise<PasosResponse> => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("No hay token en el almacenamiento local");
-  }
-
-  const response = await axios.delete<PasosResponse>(
-    `http://localhost:3000/apiRecetas/pasos/eliminarPasos/${idPaso}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  const response = await apiClient.delete<PasosResponse>(
+    API_ENDPOINTS.PASOS.DELETE(idPaso)
   );
   return response.data;
 };
